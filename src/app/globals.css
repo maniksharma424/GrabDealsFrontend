@@ -79,3 +79,35 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+
+/* Floating animation for logos */
+.floating-logo {
+  position: absolute;
+  animation: float 4s ease-in-out infinite;
+  transform: translate(var(--initial-x), var(--initial-y));
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(var(--initial-x), var(--initial-y)) scale(1);
+  }
+  50% {
+    transform: translate(calc(var(--initial-x) + 20px), calc(var(--initial-y) - 20px)) scale(1.1);
+  }
+}
+
+/* Add spacing for fall animation */
+.fall-animation .floating-logo {
+  animation: fall-to-center 3s ease-in-out forwards;
+}
+
+@keyframes fall-to-center {
+  0% {
+    opacity: 1;
+    transform: translate(var(--initial-x), var(--initial-y)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+}

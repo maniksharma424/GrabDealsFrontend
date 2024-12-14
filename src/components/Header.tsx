@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShoppingBag } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -8,14 +9,21 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
             <ShoppingBag className="w-6 h-6 text-indigo-600" />
-            <span className="font-bold text-xl">DealAlert</span>
+            <span className="font-bold text-xl">GrabDeals</span>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-gray-900">Features</a>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900">Pricing</a>
-            <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+            <a href="#features" className="text-gray-600 hover:text-gray-900">
+              Features
+            </a>
+            <a href="#pricing" className="text-gray-600 hover:text-gray-900">
+              Pricing
+            </a>
+            <Link
+              href={"/login"}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
               Get Started
-            </button>
+            </Link>
           </nav>
         </div>
       </div>

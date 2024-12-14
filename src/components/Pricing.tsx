@@ -1,27 +1,35 @@
 import React from 'react';
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 
 const plans = [
   {
     name: "Basic",
     price: "Free",
     features: [
-      "Daily deal alerts",
-      "Amazon deals",
-      "Basic price tracking",
-      "WhatsApp notifications"
+      { text: "Daily deal alerts", included: true },
+      { text: "Amazon deals", included: true },
+      { text: "Basic price tracking", included: true },
+      { text: "WhatsApp notifications", included: true },
+      { text: "Multi-platform deals", included: false },
+      { text: "Priority notifications", included: false },
+      { text: "Price history graphs", included: false },
+      { text: "Custom deal alerts", included: false },
+      { text: "24/7 support", included: false }
     ]
   },
   {
     name: "Premium",
     price: "₹99/mo",
     features: [
-      "All Basic features",
-      "Multi-platform deals",
-      "Priority notifications",
-      "Price history graphs",
-      "Custom deal alerts",
-      "24/7 support"
+      { text: "Daily deal alerts", included: true },
+      { text: "Amazon deals", included: true },
+      { text: "Basic price tracking", included: true },
+      { text: "WhatsApp notifications", included: true },
+      { text: "Multi-platform deals", included: true },
+      { text: "Priority notifications", included: true },
+      { text: "Price history graphs", included: true },
+      { text: "Custom deal alerts", included: true },
+      { text: "24/7 support", included: true }
     ]
   }
 ];
@@ -46,8 +54,12 @@ export default function Pricing() {
               <ul className="space-y-4">
                 {plan.features.map((feature, fIndex) => (
                   <li key={fIndex} className="flex items-center space-x-3">
-                    <Check className="w-5 h-5 text-green-500" />
-                    <span>{feature}</span>
+                    {feature.included ? (
+                      <Check className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <X className="w-5 h-5 text-red-500" />
+                    )}
+                    <span className={!feature.included ? "text-gray-400" : ""}>{feature.text}</span>
                   </li>
                 ))}
               </ul>
