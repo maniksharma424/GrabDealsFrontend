@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 
-export const setCookie = async (token: string) => {
+export const setAccessToken = async (token: string) => {
   const cookieStore = await cookies();
   cookieStore.set("accessToken", token, {
     httpOnly: true,

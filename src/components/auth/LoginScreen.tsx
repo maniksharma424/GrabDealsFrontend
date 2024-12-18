@@ -5,6 +5,7 @@ import PhoneInput from "./PhoneInput";
 import OTPInput from "./OTPInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { setAccessToken } from "@/serverFunctions";
 
 export const LoginScreen = () => {
   const [phone, setPhone] = useState("");
@@ -66,6 +67,7 @@ export const LoginScreen = () => {
       });
 
       localStorage.setItem("access_token", response.data.access_token);
+      setAccessToken(response.data.access_token);
       setErrorMessage("");
       router.push("/dashboard");
     } catch (error) {
