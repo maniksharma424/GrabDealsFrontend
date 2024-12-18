@@ -1,4 +1,5 @@
-import LoginScreen from "@/components/auth/LoginScreen";
+
+import { LoginScreen } from "@/components/auth/LoginScreen";
 import React from "react";
 
 const page = () => {

@@ -1,17 +1,18 @@
-"use client"
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import ProductSearch from "./ProductSearch";
 import ProductList from "./ProductList";
 import EmptyState from "./EmptyState";
 import { useProducts } from "../../hooks/useProducts";
+import { ShoppingBag } from "lucide-react";
 
 export default function Dashboard() {
-  const { products, addProduct, deleteProduct, updateProduct } = useProducts();
+  const { products, loading, error, addProduct, deleteProduct, updateProduct } =
+    useProducts();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-gray-200 opacity-[0.2] pointer-events-none" />
 
       <div className="relative">
@@ -22,6 +23,10 @@ export default function Dashboard() {
           animate={{ y: 0 }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center space-x-2">
+              <ShoppingBag className="w-6 h-6 text-indigo-600" />
+              <span className="font-bold text-xl">GrabDeals</span>
+            </div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -48,7 +53,13 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            {products.length > 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+              </div>
+            ) : error ? (
+              <div className="text-center py-12 text-red-600">{error}</div>
+            ) : products.length > 0 ? (
               <ProductList
                 products={products}
                 onDelete={deleteProduct}

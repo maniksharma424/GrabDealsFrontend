@@ -1,8 +1,10 @@
-import React from 'react';
-import { ShoppingBag } from 'lucide-react';
-import Link from 'next/link';
+import React from "react";
+import { ShoppingBag } from "lucide-react";
+import Link from "next/link";
+import { isUserLoggedIn } from "@/serverFunctions";
 
-export default function Header() {
+export default async function Header() {
+  const isLoggedIn = await isUserLoggedIn();
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,14 +17,14 @@ export default function Header() {
             <a href="#features" className="text-gray-600 hover:text-gray-900">
               Features
             </a>
-            <a href="#pricing" className="text-gray-600 hover:text-gray-900">
+            {/* <a href="#pricing" className="text-gray-600 hover:text-gray-900">
               Pricing
-            </a>
+            </a> */}
             <Link
-              href={"/login"}
+              href={isLoggedIn ? "/dashboard" : "/login"}
               className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
             >
-              Get Started
+              {isLoggedIn ? "Dashboard" : "Get Started"}
             </Link>
           </nav>
         </div>

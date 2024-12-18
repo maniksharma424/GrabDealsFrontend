@@ -1,39 +1,74 @@
-import { useState, useEffect } from 'react';
-import { Product } from '../types';
-import { loadProducts, saveProducts } from '../utils/storage';
+import { useState, useEffect } from "react";
+import { Product } from "../types";
+import { productService } from "@/services/productApiService";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch products on mount
   useEffect(() => {
-    const savedProducts = loadProducts();
-    setProducts(savedProducts);
+    fetchProducts();
   }, []);
 
-  const addProduct = (product: Product) => {
-    const newProducts = [...products, product];
-    setProducts(newProducts);
-    saveProducts(newProducts);
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const data = await productService.getProducts();
+      setProducts(data);
+      setError(null);
+    } catch (err) {
+      console.log(err);
+      setError("Failed to fetch products");
+      productService.handleError(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteProduct = (id: string) => {
-    const newProducts = products.filter(p => p.id !== id);
-    setProducts(newProducts);
-    saveProducts(newProducts);
+  const addProduct = async (name: string) => {
+    try {
+      await productService.addProduct(name);
+      // Refresh the products list
+      await fetchProducts();
+    } catch (err) {
+      setError("Failed to add product");
+      productService.handleError(err);
+    }
   };
 
-  const updateProduct = (id: string, newName: string) => {
-    const newProducts = products.map(p => 
-      p.id === id ? { ...p, name: newName } : p
-    );
-    setProducts(newProducts);
-    saveProducts(newProducts);
+  const deleteProduct = async (id: number) => {
+    try {
+      await productService.deleteProducts([id]);
+      // Refresh the products list
+      await fetchProducts();
+    } catch (err) {
+      setError("Failed to delete product");
+      productService.handleError(err);
+    }
+  };
+
+  const updateProduct = async (id: number, newName: string) => {
+    try {
+      // First delete the old keyword
+      await productService.deleteProducts([id]);
+      // Then add the new one
+      await productService.addProduct(newName);
+      // Refresh the list
+      await fetchProducts();
+    } catch (err) {
+      setError("Failed to update product");
+      productService.handleError(err);
+    }
   };
 
   return {
     products,
+    loading,
+    error,
     addProduct,
     deleteProduct,
-    updateProduct
+    updateProduct,
   };
 }

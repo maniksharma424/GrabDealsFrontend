@@ -1,34 +1,62 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Edit2, Check, X } from 'lucide-react';
-import { Product } from '../../types';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Trash2, Edit2, Check, X, Loader2 } from "lucide-react";
+
+interface Product {
+  id: number;
+  word: string;
+}
 
 interface ProductListProps {
   products: Product[];
-  onDelete: (id: string) => void;
-  onEdit: (id: string, newName: string) => void;
+  onDelete: (id: number) => Promise<void>;
+  onEdit: (id: number, newName: string) => Promise<void>;
 }
 
-export default function ProductList({ products, onDelete, onEdit }: ProductListProps) {
-  const [editingId, setEditingId] = React.useState<string | null>(null);
-  const [editValue, setEditValue] = React.useState('');
+export default function ProductList({
+  products,
+  onDelete,
+  onEdit,
+}: ProductListProps) {
+  const [editingId, setEditingId] = React.useState<number | null>(null);
+  const [editValue, setEditValue] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState<number | null>(null);
 
   const startEdit = (product: Product) => {
     setEditingId(product.id);
-    setEditValue(product.name);
+    setEditValue(product.word);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
-    setEditValue('');
+    setEditValue("");
   };
 
-  const saveEdit = (id: string) => {
-    onEdit(id, editValue);
-    setEditingId(null);
-    setEditValue('');
+  const handleSaveEdit = async (id: number) => {
+    if (!editValue.trim()) return;
+    setIsLoading(id);
+    try {
+      await onEdit(id, editValue.trim());
+      setEditingId(null);
+      setEditValue("");
+    } catch (error) {
+      console.error("Error updating keyword:", error);
+    } finally {
+      setIsLoading(null);
+    }
   };
 
+  const handleDelete = async (id: number) => {
+    setIsLoading(id);
+    try {
+      await onDelete(id);
+    } catch (error) {
+      console.error("Error deleting keyword:", error);
+    } finally {
+      setIsLoading(null);
+    }
+  };
+  console.log(products);
   return (
     <div className="space-y-4">
       <AnimatePresence>
@@ -50,14 +78,20 @@ export default function ProductList({ products, onDelete, onEdit }: ProductListP
                   autoFocus
                 />
                 <button
-                  onClick={() => saveEdit(product.id)}
+                  onClick={() => handleSaveEdit(product.id)}
                   className="p-1 text-green-500 hover:text-green-600"
+                  disabled={isLoading === product.id}
                 >
-                  <Check className="w-5 h-5" />
+                  {isLoading === product.id ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Check className="w-5 h-5" />
+                  )}
                 </button>
                 <button
                   onClick={cancelEdit}
                   className="p-1 text-red-500 hover:text-red-600"
+                  disabled={isLoading === product.id}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -65,21 +99,26 @@ export default function ProductList({ products, onDelete, onEdit }: ProductListP
             ) : (
               <>
                 <div className="flex-1">
-                  <h3 className="font-medium text-gray-900">{product.name}</h3>
-                  <p className="text-sm text-gray-500">Added on {new Date(product.addedAt).toLocaleDateString()}</p>
+                  <h3 className="font-medium text-gray-900">{product.word}</h3>
                 </div>
                 <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     onClick={() => startEdit(product)}
                     className="p-1 text-gray-400 hover:text-indigo-600 transition-colors"
+                    disabled={isLoading === product.id}
                   >
                     <Edit2 className="w-5 h-5" />
                   </button>
                   <button
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => handleDelete(product.id)}
                     className="p-1 text-gray-400 hover:text-red-600 transition-colors"
+                    disabled={isLoading === product.id}
                   >
-                    <Trash2 className="w-5 h-5" />
+                    {isLoading === product.id ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </>
