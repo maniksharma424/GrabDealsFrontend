@@ -76,7 +76,7 @@ export default function Benefits() {
                   {stat.icon}
                 </div>
                 <div className="text-4xl font-bold text-indigo-600 mb-2">
-                  <StatCounter end={stat.value} suffix={stat.suffix} />
+                  <StatCounter end={stat.value} suffix={stat.suffix} /> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro officia aliquam corporis, eligendi, exercitationem delectus debitis quisquam at, in magnam tenetur fugit quis a tempora doloremque consequatur suscipit minima necessitatibus!
                 </div>
                 <div className="font-semibold text-gray-900 mb-2">
                   {stat.label}
