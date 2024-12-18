@@ -6,10 +6,7 @@ export async function searchProducts(query: string): Promise<Product | null> {
   
   // For demo purposes, create a mock product
   return {
-    id: Date.now().toString(),
-    name: query,
-    addedAt: new Date().toISOString(),
-    currentPrice: Math.floor(Math.random() * 10000) + 1000,
-    targetPrice: null
+    id: Number(Date.now().toString()),
+    word: query,
   };
 }
