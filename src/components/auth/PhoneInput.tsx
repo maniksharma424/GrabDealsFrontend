@@ -1,17 +1,25 @@
-import React from 'react';
-import { Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { RefObject } from "react";
+import { Phone, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface PhoneInputProps {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: () => Promise<void>;
+  isLoading: boolean;
+  inputRef: React.RefObject<HTMLInputElement | null>; // Changed this line
 }
 
-export default function PhoneInput({ value, onChange, onSubmit }: PhoneInputProps) {
-  const handleSubmit = (e: React.FormEvent) => {
+export default function PhoneInput({
+  value,
+  onChange,
+  onSubmit,
+  isLoading,
+  inputRef,
+}: PhoneInputProps) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit();
+    await onSubmit();
   };
 
   return (
@@ -24,10 +32,11 @@ export default function PhoneInput({ value, onChange, onSubmit }: PhoneInputProp
       <div className="relative">
         <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-indigo-400 w-5 h-5" />
         <input
+          ref={inputRef}
           type="tel"
           value={value}
           onChange={(e) => {
-            const input = e.target.value.replace(/\D/g, '');
+            const input = e.target.value.replace(/\D/g, "");
             if (input.length <= 10) {
               onChange(input);
             }
@@ -39,12 +48,13 @@ export default function PhoneInput({ value, onChange, onSubmit }: PhoneInputProp
       </div>
       <button
         type="submit"
-        disabled={value.length !== 10}
+        disabled={value.length !== 10 || isLoading}
         className="mt-4 w-full bg-indigo-600 text-white py-4 rounded-lg font-medium 
                  hover:bg-indigo-500 transition-colors duration-200 disabled:opacity-50 
-                 disabled:cursor-not-allowed disabled:hover:bg-indigo-600"
+                 disabled:cursor-not-allowed disabled:hover:bg-indigo-600
+                 flex items-center justify-center"
       >
-        Get OTP
+        {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Get OTP"}
       </button>
     </motion.form>
   );

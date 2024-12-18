@@ -5,28 +5,25 @@ import PhoneInput from "./PhoneInput";
 import OTPInput from "./OTPInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { setCookie } from "@/serverFunctions";
 
 export const LoginScreen = () => {
   const [phone, setPhone] = useState("");
   const [showOTP, setShowOTP] = useState(false);
-  const [otp, setOtp] = useState(Array(6).fill(""));
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const phoneInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Autofocus on phone input when component mounts
     if (phoneInputRef.current && !showOTP) {
       phoneInputRef.current.focus();
     }
-  }, [showOTP]); // Re-run when showOTP changes
+  }, [showOTP]);
 
   const handlePhoneSubmit = async () => {
     setIsLoading(true);
     try {
-      // Validate phone number length
       if (phone.length !== 10) {
         setErrorMessage("Please enter a valid 10-digit phone number");
         return;
@@ -47,13 +44,8 @@ export const LoginScreen = () => {
 
   const handleOTPChange = async (otpValue: string[]) => {
     setOtp(otpValue);
-    // Only submit if we have all 6 digits and they're all numbers
     const otpString = otpValue.join("");
-    if (
-      otpValue.length === 6 &&
-      otpValue.every((digit) => digit !== "") &&
-      otpString.length === 6
-    ) {
+    if (otpValue.every((digit) => digit !== "") && otpString.length === 6) {
       await handleOTPSubmit(otpString);
     }
   };
@@ -61,34 +53,23 @@ export const LoginScreen = () => {
   const handleOTPSubmit = async (otpString: string) => {
     setIsLoading(true);
     try {
-      // Ensure we have a 6-digit number
-      const otpNumber = parseInt(otpString || otp.join(""), 10);
+      const otpNumber = parseInt(otpString, 10);
 
-      // Validate OTP is 6 digits
       if (otpNumber < 100000 || otpNumber > 999999) {
         setErrorMessage("Please enter a valid 6-digit OTP");
-        setIsLoading(false);
         return;
       }
 
-      const payload = {
+      const response = await axios.post("https://api.grabdeals.site/login", {
         phone_number: `+91${phone}`,
         otp: otpNumber,
-      };
+      });
 
-      console.log("Login request payload:", payload); // For debugging
-
-      const response = await axios.post(
-        "https://api.grabdeals.site/login",
-        payload
-      );
       localStorage.setItem("access_token", response.data.access_token);
-      await setCookie(response.data.access_token);
       setErrorMessage("");
       router.push("/dashboard");
     } catch (error) {
       console.error("Error verifying OTP:", error);
-
       setErrorMessage("Invalid OTP. Please try again.");
     } finally {
       setIsLoading(false);
@@ -116,10 +97,8 @@ export const LoginScreen = () => {
     setShowOTP(false);
     setOtp(Array(6).fill(""));
     setErrorMessage("");
-    // Autofocus will happen due to useEffect
   };
 
-  // Rest of your JSX remains the same
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1557683316-973673baf926')] opacity-10" />
@@ -155,7 +134,11 @@ export const LoginScreen = () => {
             />
           ) : (
             <div>
-              <OTPInput otp={otp} setOtp={handleOTPChange} />
+              <OTPInput
+                otp={otp}
+                setOtp={handleOTPChange}
+                isLoading={isLoading}
+              />
               <button
                 onClick={handleResendOTP}
                 className="w-full mt-4 py-2 text-sm font-semibold text-white bg-indigo-500 rounded-lg hover:bg-indigo-600"
@@ -203,3 +186,5 @@ export const LoginScreen = () => {
     </div>
   );
 };
+
+export default LoginScreen;
