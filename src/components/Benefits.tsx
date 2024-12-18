@@ -28,20 +28,20 @@ const stats = [
   },
 ];
 
-const testimonials = [
-  {
-    quote:
-      "GrabDeals helped me save ₹15,000 on my festival shopping. The WhatsApp notifications are super convenient!",
-    author: "Priya S.",
-    role: "Fashion Enthusiast",
-  },
-  {
-    quote:
-      "I love how it tracks prices across multiple sites. Got my favorite gadget at the lowest price ever.",
-    author: "Rahul M.",
-    role: "Tech Shopper",
-  },
-];
+// const testimonials = [
+//   {
+//     quote:
+//       "GrabDeals helped me save ₹15,000 on my festival shopping. The WhatsApp notifications are super convenient!",
+//     author: "Priya S.",
+//     role: "Fashion Enthusiast",
+//   },
+//   {
+//     quote:
+//       "I love how it tracks prices across multiple sites. Got my favorite gadget at the lowest price ever.",
+//     author: "Rahul M.",
+//     role: "Tech Shopper",
+//   },
+// ];
 
 export default function Benefits() {
   return (

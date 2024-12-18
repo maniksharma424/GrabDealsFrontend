@@ -37,7 +37,7 @@ export default function EmptyState() {
         No Products Added Yet
       </h3>
       <p className="text-gray-500 mb-8 max-w-md mx-auto">
-        Start tracking your favorite products by searching above. We'll notify
+        Start tracking your favorite products by searching above. We will notify
         you when prices drop!
       </p>
 
