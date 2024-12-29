@@ -23,14 +23,14 @@ export async function generateMetadata() {
 
       description:
         "Price Track personalized products across all e-commerce stores",
-      images: [{ url: logo }],
+      images: [{ url: "../../public/cropped-GrabDealsLogo.jpg" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "Grab Deals",
       description:
         "Price Track personalized products across all e-commerce stores",
-      images: [logo],
+      images: ["../../public/cropped-GrabDealsLogo.jpg"],
     },
   };
 }
