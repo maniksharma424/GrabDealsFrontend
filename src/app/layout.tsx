@@ -1,6 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import logo from "../../public/cropped-GrabDealsLogo.jpg";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,28 +19,19 @@ export async function generateMetadata() {
       "Price Track personalized products across all e-commerce stores",
     openGraph: {
       title: "Grab Deals",
-
       description:
         "Price Track personalized products across all e-commerce stores",
-      images: [{ url: "../../public/cropped-GrabDealsLogo.jpg" }],
+      images: [{ url: "/cropped-GrabDealsLogo.jpg" }], // Use direct path to public folder
     },
     twitter: {
       card: "summary_large_image",
       title: "Grab Deals",
       description:
         "Price Track personalized products across all e-commerce stores",
-      images: ["../../public/cropped-GrabDealsLogo.jpg"],
+      images: ["/cropped-GrabDealsLogo.jpg"], // Use direct path to public folder
     },
   };
 }
-// export const metadata: Metadata = {
-//   title: "Grab Deals",
-//   description:
-//     "Price Track personalised products accorss all e-commerce stores ",
-//     openGraph:{
-//       images:[logo]
-//     }
-// };
 
 export default function RootLayout({
   children,
