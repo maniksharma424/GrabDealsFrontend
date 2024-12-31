@@ -6,6 +6,7 @@ import ProductList from "./ProductList";
 import EmptyState from "./EmptyState";
 import { useProducts } from "../../hooks/useProducts";
 import { ShoppingBag } from "lucide-react";
+import SignoutButton from "../SignoutButton";
 
 export default function Dashboard() {
   const { products, loading, error, addProduct, deleteProduct, updateProduct } =
@@ -22,23 +23,28 @@ export default function Dashboard() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex items-center space-x-2">
-              <ShoppingBag className="w-6 h-6 text-indigo-600" />
-              <span className="font-bold text-xl">GrabDeals</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-start">
+            <div>
+              <div className="flex items-center space-x-2">
+                <ShoppingBag className="w-6 h-6 text-indigo-600" />
+                <span className="font-bold text-xl">GrabDeals</span>
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Product Tracking
+                </h1>
+                <p className="mt-2 text-gray-600">
+                  Add products you want to track for price drops and deals.
+                </p>
+              </motion.div>
             </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h1 className="text-3xl font-bold text-gray-900">
-                Product Tracking
-              </h1>
-              <p className="mt-2 text-gray-600">
-                Add products you want to track for price drops and deals.
-              </p>
-            </motion.div>
+            <div>
+              <SignoutButton />
+            </div>
           </div>
         </motion.div>
 

@@ -2,6 +2,7 @@ import React from "react";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { isUserLoggedIn } from "@/serverFunctions";
+import SignoutButton from "./SignoutButton";
 
 export default async function Header() {
   const isLoggedIn = await isUserLoggedIn();
@@ -26,6 +27,7 @@ export default async function Header() {
             >
               {isLoggedIn ? "Dashboard" : "Get Started"}
             </Link>
+            {isLoggedIn && <SignoutButton />}
           </nav>
         </div>
       </div>

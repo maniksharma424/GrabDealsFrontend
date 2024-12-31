@@ -67,7 +67,7 @@ export default function OTPInput({
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             disabled={isLoading}
-            className="w-12 h-14 text-center text-xl font-semibold rounded-lg bg-white/10 
+            className="md:w-12 md:h-14 w-8 h-8 text-center md:text-xl text-sm font-semibold rounded-lg bg-white/10 
                      backdrop-blur-sm border border-white/20 text-white focus:ring-2 
                      focus:ring-indigo-400 focus:border-transparent disabled:opacity-50"
             initial={{ scale: 0.8, opacity: 0 }}
